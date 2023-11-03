@@ -1,0 +1,4 @@
+Flask_Cors==3.0.10
+pyserial==3.5
+requests==2.21.0
+smbus2==0.4.2
