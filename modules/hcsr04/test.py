@@ -13,9 +13,8 @@ GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
 
 while True:
-
     GPIO.output(TRIG, False)
-    print( "Olculuyor...")
+    print("Olculuyor...")
     time.sleep(2)
 
     GPIO.output(TRIG, True)
@@ -36,5 +35,4 @@ while True:
     if distance > 2 and distance < 400:
         print("Mesafe:",distance - 0.5,"cm")
     else:
-        print("Menzil asildi") 
-
+        print("Menzil asildi")

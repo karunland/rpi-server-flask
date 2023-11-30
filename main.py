@@ -3,12 +3,21 @@ from flask_cors import CORS
 import logging
 import json
 import subprocess
+import random
+import RPi.GPIO as GPIO
+
+from modules.servo.Servo import ServoControl
+from modules.mq9.Mq9 import MQ9Sensor
+from modules.hcsr04.Hcsr04 import UltrasonicSensor
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 CORS(app)
 
+servo = ServoControl(servo_pin=18)
+mq9 = MQ9Sensor(pin=14)
+ultrasonic = UltrasonicSensor(trig_pin=23, echo_pin=24)
 
 def run_command(cmd):
     p = subprocess.Popen(
@@ -20,7 +29,6 @@ def run_command(cmd):
     )
     out, err = p.communicate()
     return out, err
-
 
 @app.route('/', methods=['GET'])
 def hello_world():
@@ -34,24 +42,24 @@ def whoami():
 @app.route('/flask/sensor/gas', methods=['GET'])
 def get_gas():
     try:
-        # get data from sensor
-        # data = get_data()
-        # return data
-        return '15'
+        a = mq9.read_sensor()
+        return f"{a}"
     except Exception as e:
         logging.error(e)
         return '0'
 
+
 @app.route('/flask/set/servo', methods=['POST'])
 def set_servo():
-    direction = request.form['direction']
-    speed = request.form['speed']
     try:
-        # set servo
-        # set_servo(direction, speed)
-        # return '1'
-        # return direction and speed in json format 
-        return json.dumps({'direction': direction, 'speed': speed})
+        # global servoFlag
+        # if (servoFlag != 0):
+        #     return False, 404
+        # servoFlag = 1
+        speed = int(request.form['speed'])
+        servo.rotate_90_degrees(speed)
+        servoFlag = 0
+        return json.dumps({'speed': speed})
     except Exception as e:
         logging.error(e)
         return '0'
@@ -70,10 +78,8 @@ def set_fan():
 @app.route('/flask/sensor/hcsr04', methods=['GET'])
 def get_hcsr04():
     try:
-        # get data from sensor
-        # data = get_data()
-        # return data
-        return '15'
+        distance = ultrasonic.get_distance()
+        return f"{distance}"
     except Exception as e:
         logging.error(e)
         return '0'
@@ -83,8 +89,8 @@ if __name__ == '__main__':
         app.env = "development"
         user, err = run_command('whoami')
         print(f"User {user}")
-        app.run(host='127.0.0.1', port=5000, debug=True)
+        app.run(host='0.0.0.0', port=5000, debug=True)
     except KeyboardInterrupt:
         # fan_pwm.stop()
-        # GPIO.cleanup()
+        GPIO.cleanup()
         print("Keyboard interrupt")
