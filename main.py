@@ -105,6 +105,10 @@ def get_gas():
 
 @app.route('/flask/sensor/gas/<int:channel>', methods=['GET'])
 def read_sensor_channel(channel):
+    i2cAddresses, err = run_command('sudo i2cdetect -y 1')
+    if i2cAddresses.find("48") == -1:
+        print("a")
+        return jsonify({'sensor_value': "0"})
     if channel < 0 or channel > 3:
         return jsonify({'error': 'Invalid channel number. Please provide a value between 0 and 3.'}), 400
     
