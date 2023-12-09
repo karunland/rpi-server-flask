@@ -43,6 +43,8 @@ class ServoControl:
             # GPIO.cleanup()
             pass
 
-# 9 15 30
-# servo = ServoControl(servo_pin=18)
-# servo.rotate_90_degrees(9)
+
+if __name__ == '__main__':
+    # 9 15 30
+    servo = ServoControl(servo_pin=18)
+    servo.rotate_90_degrees(9)

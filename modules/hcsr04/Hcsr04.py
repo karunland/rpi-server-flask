@@ -31,18 +31,9 @@ class UltrasonicSensor:
             return distance - 0.5
         else:
             return None
-
-# ultrasonic = UltrasonicSensor(trig_pin=23, echo_pin=24)
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
-# print(f"{ultrasonic.get_distance()}")
+if __name__ == '__main__':
+    ultrasonic = UltrasonicSensor(trig_pin=23, echo_pin=24)
+    print(f"{ultrasonic.get_distance()}")
+    print(f"{ultrasonic.get_distance()}")
+    print(f"{ultrasonic.get_distance()}")
+    print(f"{ultrasonic.get_distance()}")
