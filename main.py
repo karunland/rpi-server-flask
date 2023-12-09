@@ -46,25 +46,63 @@ def whoami():
     out, err = run_command("whoami")
     return f'{out}'
 
-@app.route('/flask/set/servo', methods=['POST'])
-def set_servo():
+@app.route('/flask/set/servo-open', methods=['POST'])
+def open_servo():
     global servoFlag
     if (servoFlag != 0):
-        print("set servo 0")
+        print("open servo 0")
         return "0"
         
     servoFlag = 1
     speed = int(request.form['speed'])
     try:
-        # servo.rotate_90_degrees(speed)
-        time.sleep(5)
+        servo.rotate_90_degrees(speed)
+        time.sleep(2)
         servoFlag = 0
-        print("set servo 1")
+        print("open servo 1")
         return "1"
     except Exception as e:
         logging.error(e)
-        print("set servo 3")
+        print("open servo 3")
         return "3"
+
+@app.route('/flask/set/servo-close', methods=['POST'])
+def close_servo():
+    global servoFlag
+    if (servoFlag != 0):
+        print("close servo 0")
+        return "0"
+
+    servoFlag = 1
+    try:
+        servo.rotate_0_degrees(30)
+        time.sleep(2)
+        servoFlag = 0
+        print("close servo 1")
+        return "1"
+    except Exception as e:
+        logging.error(e)
+        print("close servo 3")
+        return "3"
+
+@app.route('/flask/set/just-close', methods=['POST'])
+def just_servo():
+    global servoFlag
+    if (servoFlag != 0):
+        print("close servo 0")
+        return "0"
+
+    servoFlag = 1
+    try:
+        servo.close_door()
+        servoFlag = 0
+        print("close servo 1")
+        return "1"
+    except Exception as e:
+        logging.error(e)
+        print("close servo 3")
+        return "3"
+
 
 @app.route('/flask/set/fan', methods=['POST'])
 def set_fan():
@@ -72,7 +110,7 @@ def set_fan():
     if (fanFLag != 0):
         print("set servo 0")
         return "0"
-        
+    
     fanFLag = 1
     speed = request.form['speed']
     try:
