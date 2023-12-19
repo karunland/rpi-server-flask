@@ -1,0 +1,14 @@
+[Unit]
+Description=Http Camera Service
+After=network.target
+
+[Service]
+User=karun
+WorkingDirectory=/home/karun/project/
+ExecStart=python3 camera.py
+RestartSec=2
+Restart=always
+StandardOutput=append:/home/karun/project/logs/camera_output.log
+
+[Install]
+WantedBy=multi-user.target

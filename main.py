@@ -56,6 +56,10 @@ def open_servo():
     servoFlag = 1
     speed = int(request.form['speed'])
     try:
+        if (speed > 90):
+            servo.open_door()
+            servoFlag = 0
+            return "1"
         servo.rotate_90_degrees(speed)
         time.sleep(2)
         servoFlag = 0

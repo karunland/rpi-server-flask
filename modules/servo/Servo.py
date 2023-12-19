@@ -33,6 +33,9 @@ class ServoControl:
     def close_door(self):
         self.set_angle(0)
 
+    def open_door(self):
+        self.set_angle(90)
+
     def rotate_0_degrees(self, delay):
         angle = 90
         step = int(90 / delay)
